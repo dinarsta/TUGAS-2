@@ -1,7 +1,7 @@
 public class Menu {
     String nama;
     double harga;
-    String kategori; // "makanan" atau "minuman"
+    String kategori; // makanan / minuman
 
     public Menu(String nama, double harga, String kategori) {
         this.nama = nama;
