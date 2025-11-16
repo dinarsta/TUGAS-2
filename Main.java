@@ -2,17 +2,17 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
-    // Initial menu capacity (we will resize arrays when needed)
+    // Kapasitas awal menu (akan di-resize jika diperlukan)
     static Menu[] daftarMenu = new Menu[20];
     static int menuCount = 0;
 
-    // For ordering: keep lists using arrays
+    // Untuk pemesanan: simpan daftar menggunakan array
     static Menu[] orderedMenus = new Menu[50];
     static int[] orderedQty = new int[50];
     static int orderCount = 0;
 
-    static final double TAX_RATE = 0.10;
-    static final int SERVICE_FEE = 20000;
+    static final double TAX_RATE = 0.10; // Tarif pajak 10%
+    static final int SERVICE_FEE = 20000; // Biaya layanan tetap
 
     static Scanner sc = new Scanner(System.in);
 
@@ -21,6 +21,8 @@ public class Main {
         mainMenu();
     }
 
+    // Inisialisasi menu awal
+    
     static void seedMenus() {
         addMenuInternal(new Menu("Ayam Geprek", 15000, "Makanan"));
         addMenuInternal(new Menu("Mie Goreng", 12000, "Makanan"));
@@ -33,17 +35,26 @@ public class Main {
         addMenuInternal(new Menu("Lemon Tea", 8000, "Minuman"));
     }
 
+ 
+    // Tambah menu ke array internal
+    
     static void addMenuInternal(Menu m) {
         if (menuCount >= daftarMenu.length) resizeMenuArray();
         daftarMenu[menuCount++] = m;
     }
 
+
+    // Perbesar array menu jika penuh
+  
     static void resizeMenuArray() {
         Menu[] tmp = new Menu[daftarMenu.length * 2];
         System.arraycopy(daftarMenu, 0, tmp, 0, daftarMenu.length);
         daftarMenu = tmp;
     }
 
+   
+    // Perbesar array pemesanan jika diperlukan
+  
     static void resizeOrderArraysIfNeeded() {
         if (orderCount >= orderedMenus.length - 1) {
             Menu[] tmpM = new Menu[orderedMenus.length * 2];
@@ -55,6 +66,9 @@ public class Main {
         }
     }
 
+  
+    // Menu utama
+   
     static void mainMenu() {
         while (true) {
             System.out.println("\n=== APLIKASI RESTORAN ===");
@@ -76,11 +90,10 @@ public class Main {
         }
     }
 
-    // -------------------------
-    // Customer flow
-    // -------------------------
+    // Alur pelanggan
+
     static void menuPelanggan() {
-        orderCount = 0; // reset previous order
+        orderCount = 0; // reset pesanan sebelumnya
         System.out.println("\n-- Menu Pemesanan --");
         tampilMenuBergrup();
 
@@ -111,7 +124,7 @@ public class Main {
                 }
             }
 
-            // Add to order
+            // Tambahkan ke pesanan
             boolean appended = false;
             for (int i = 0; i < orderCount; i++) {
                 if (orderedMenus[i].getNama().equalsIgnoreCase(found.getNama())) {
@@ -137,6 +150,9 @@ public class Main {
         prosesPemesanan();
     }
 
+   
+    // Cari menu berdasarkan nama
+  
     static Menu findMenuByName(String nama) {
         for (int i = 0; i < menuCount; i++) {
             if (daftarMenu[i].getNama().equalsIgnoreCase(nama)) return daftarMenu[i];
@@ -144,6 +160,9 @@ public class Main {
         return null;
     }
 
+  
+    // Proses dan konfirmasi pesanan
+ 
     static void prosesPemesanan() {
         System.out.println("\n-- Konfirmasi Pesanan --");
         for (int i = 0; i < orderCount; i++) {
@@ -155,9 +174,8 @@ public class Main {
         cetakStruk(receipt);
     }
 
-    // -------------------------
-    // Pricing, tax, discount logic
-    // -------------------------
+    // Logika harga, pajak, dan diskon
+   
     static class Receipt {
         int subtotal;
         int drinkDiscount;
@@ -200,6 +218,9 @@ public class Main {
         return r;
     }
 
+  
+    // Cetak struk pembayaran
+   
     static void cetakStruk(Receipt r) {
         DecimalFormat df = new DecimalFormat("#,###");
         System.out.println("\n========== STRUK PEMBAYARAN ==========");
@@ -225,9 +246,9 @@ public class Main {
         System.out.println("Terima kasih telah memesan!");
     }
 
-    // -------------------------
-    // Owner menu management
-    // -------------------------
+ 
+    // Manajemen menu untuk owner
+
     static void manajemenMenu() {
         while (true) {
             System.out.println("\n-- Manajemen Menu --");
@@ -250,6 +271,8 @@ public class Main {
         }
     }
 
+    // Tampilkan menu per kategori
+    
     static void tampilMenuBergrup() {
         System.out.println("\n--- MAKANAN ---");
         for (int i = 0; i < menuCount; i++) {
@@ -264,6 +287,9 @@ public class Main {
         }
     }
 
+  
+    // Tambah menu baru
+ 
     static void tambahMenu() {
         System.out.print("Berapa menu baru yang ingin ditambahkan? ");
         int n = readPositiveInt();
@@ -298,6 +324,9 @@ public class Main {
         }
     }
 
+  
+    // Ubah harga menu
+   
     static void ubahHargaMenu() {
         tampilMenuDenganNomor();
         if (menuCount == 0) { System.out.println("Tidak ada menu."); return; }
@@ -323,6 +352,9 @@ public class Main {
         else { System.out.println("Perubahan dibatalkan."); }
     }
 
+   
+    // Hapus menu
+ 
     static void hapusMenu() {
         tampilMenuDenganNomor();
         if (menuCount == 0) { System.out.println("Tidak ada menu."); return; }
@@ -350,6 +382,9 @@ public class Main {
         } else { System.out.println("Penghapusan dibatalkan."); }
     }
 
+   
+    // Tampilkan menu dengan nomor
+   
     static void tampilMenuDenganNomor() {
         System.out.println("\nDaftar Menu:");
         for (int i = 0; i < menuCount; i++) {
@@ -358,6 +393,9 @@ public class Main {
         }
     }
 
+  
+    // Baca input integer positif
+  
     static int readPositiveInt() {
         while (true) {
             String s = sc.nextLine().trim();
